@@ -1,0 +1,8 @@
+die
+does
+end
+equip
+less
+pose
+sun
+use
