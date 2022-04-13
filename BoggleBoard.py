@@ -18,7 +18,8 @@ class BoggleBoard:
 
     #checks if a given x, y pair are a valid coordinate
     def isValidLocation(self, x: int, y: int) -> bool:
-        desiredIndex: int = y + (x * 4)
+        if not 0 <= x < 4 or not 0 <= y < 4: return False
+        desiredIndex: int = x + (y * 4)
         if (desiredIndex < 0) or desiredIndex > (len(self.__board) - 1): return False
         return True
 
@@ -26,7 +27,7 @@ class BoggleBoard:
     def getCharAt(self, x: int, y:int) -> str:
         if not self.isValidLocation(x, y):
             return None
-        char: str = self.__board[y + (x * 4)]
+        char: str = self.__board[x+ (y * 4)]
         #If the character is a Q, then return QU per the rules
         if char == "q":
             char += "u"
@@ -35,7 +36,7 @@ class BoggleBoard:
     #sets the character at a given x,y position to a new character if the coordinates are valid
     def setCharAt(self, x: int, y:int, newChar: str) -> None:
         if self.isValidLocation(x, y):
-            self.__board[y + (x * 4)] = newChar
+            self.__board[x + (y * 4)] = newChar
 
     #go down until the sequence is no longer in the tree, as you go back up check if the sequence is a word at each step 
     def dfs(self, x: int, y:int, sequence: str) -> None:
@@ -63,12 +64,10 @@ class BoggleBoard:
             if self.__dict.containsWord(sequence): self.__containedWords.add(sequence)
             return
 
-    #triggers simulation and generates all valid strings
+    #triggers simulation and generates all valid strings. Kicks off a DFS on each starting tile on the board.
     def play(self) -> WordCache:
-        #for each starting location
-        for x in range(4):
-            for y in range (4):
-                #start DFS at the position x,y with the character stored there
+        for y in range(4):
+            for x in range (4):
                 self.dfs(x, y, self.getCharAt(x, y))
         return self.__containedWords
 
