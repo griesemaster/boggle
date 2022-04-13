@@ -28,17 +28,24 @@
 import sys
 
 from BoggleBoard import BoggleBoard
-from WordCache import WordCache
+from wordTree import wordTree
 
 def main():
     args = sys.argv[1:]
+    
+    args = ["board-sample-1.txt", "dictionary.txt", "myOut.txt"]
+
     if len(args) < 3:
         sys.exit("Usage: Boggle.py <board file> <dictionary file> <output file>")
 
-    GameBoard: BoggleBoard = BoggleBoard(args[0])
-    ValidWords: WordCache = WordCache(args[1])
+    boardFile: str = args[0]
+    dictFile: str = args[1]
+    outFile: str = args[2]
 
-    print(ValidWords)
+    #Create the game board and the valid words
+    ValidWords: wordTree = wordTree(dictFile)
+    GameBoard: BoggleBoard = BoggleBoard(boardFile, ValidWords)
+    GameBoard.play().dumpWords(outFile)
 
 if __name__ == '__main__':
     main()

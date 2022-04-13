@@ -1,21 +1,22 @@
+from wordTree import wordTree
+
+
 class WordCache: 
 
-    #Start with empty __containedWords
-    def __init__(self) -> None:
-        pass
-
     #Constructed from existing set of words
-    def __init__(self, PathToWordList: str) -> None:
-        #Generate word list from the passed file 
-        wordFile = open(PathToWordList, "r")
-        self.__containedWords : set = {word.strip() for word in wordFile.readlines()}
-        wordFile.close()
+    def __init__(self) -> None:
+        self.__words = set()
+   
+    #returns true if the item is contained in the set of all words
+    def contains(self, item: str) -> bool:
+        return item in self.__words
 
-    def __str__(self) -> str:
-        return str(self.__containedWords)
+    #adds the passed item to the set
+    def add(self, item: str) -> None:
+        self.__words.add(item)
 
-    def contains(self, word: str) -> bool:
-        return word in self.__containedWords
-
-    def add(self, newWord: str) -> None:
-        self.__containedWords.add(newWord)
+    #sorts the held words into alphabetical order and then writes them to file
+    def dumpWords(self, dumpPath: str) -> None:
+        outFile = open(dumpPath, "w")
+        for word in sorted(self.__words): outFile.write(word.lower() + "\n")
+        outFile.close()
